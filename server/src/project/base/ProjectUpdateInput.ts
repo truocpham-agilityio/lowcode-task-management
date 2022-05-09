@@ -14,6 +14,7 @@ import { ApiProperty } from "@nestjs/swagger";
 import { IsString, IsOptional, ValidateNested, IsDate } from "class-validator";
 import { UserWhereUniqueInput } from "../../user/base/UserWhereUniqueInput";
 import { Type } from "class-transformer";
+import { TaskUpdateManyWithoutProjectsInput } from "./TaskUpdateManyWithoutProjectsInput";
 @InputType()
 class ProjectUpdateInput {
   @ApiProperty({
@@ -60,5 +61,17 @@ class ProjectUpdateInput {
     nullable: true,
   })
   startDate?: Date | null;
+
+  @ApiProperty({
+    required: false,
+    type: () => TaskUpdateManyWithoutProjectsInput,
+  })
+  @ValidateNested()
+  @Type(() => TaskUpdateManyWithoutProjectsInput)
+  @IsOptional()
+  @Field(() => TaskUpdateManyWithoutProjectsInput, {
+    nullable: true,
+  })
+  tasks?: TaskUpdateManyWithoutProjectsInput;
 }
 export { ProjectUpdateInput };

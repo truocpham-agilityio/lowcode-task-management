@@ -15,6 +15,7 @@ model User {
   password  String
   projects  Project[]
   roles     String[]
+  tasks     Task[]
   updatedAt DateTime  @updatedAt
   username  String    @unique
 }
@@ -27,5 +28,26 @@ model Project {
   owner       User      @relation(fields: [ownerId], references: [id])
   ownerId     String
   startDate   DateTime?
+  tasks       Task[]
   updatedAt   DateTime  @updatedAt
+}
+
+model Task {
+  assignedTo     User?           @relation(fields: [assignedToId], references: [id])
+  assignedToId   String?
+  createdAt      DateTime        @default(now())
+  estimationDays DateTime?
+  id             String          @id @default(cuid())
+  project        Project?        @relation(fields: [projectId], references: [id])
+  projectId      String?
+  status         EnumTaskStatus?
+  title          String
+  updatedAt      DateTime        @updatedAt
+}
+
+enum EnumTaskStatus {
+  New
+  Pending
+  Ongoing
+  Done
 }
